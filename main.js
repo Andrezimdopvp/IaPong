@@ -27,14 +27,27 @@ ball = {
     dx:3,
     dy:3
 }
-
+pulsoX = 0;
+pulsoY = 0;
+pulsoP = 0;
 function setup(){
   canvas =  createCanvas(700,550);
   canvas.parent('canvas');
   video = createCapture(VIDEO);
   video.size(700,550);
   video.hide();
-  posenet = ml5.poseNet(video, modelLoaded);
+  poseNet = ml5.poseNet(video, modelLoaded);
+  poseNet.on('pose', gotPoses);
+} 
+
+function gotPoses(results){
+  if(results.length > 0)
+  {
+    console.log(results);
+    pulsoX = results[0].pose.rightWrist.x;
+    pulsoY = results[0].pose.rightWrist.y;
+    pulsoP = results[0].pose.keypoints[10].score;
+  }
 }
 
 function modelLoaded(){
@@ -42,7 +55,6 @@ function modelLoaded(){
 }
 
 function draw(){
-
   background(0); 
   image(video,0,0,700,550)
   fill("black");
@@ -81,6 +93,13 @@ function draw(){
 
   //Chamar a função move() (muito importante para o jogo)
   move();
+
+  if(pulsoP > 0.2)
+  {
+    fill(117, 201, 139);
+    stroke(117, 201, 139);
+    circle(pulsoX, pulsoY, 20);
+  }
 }
 
 
