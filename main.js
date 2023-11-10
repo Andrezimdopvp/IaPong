@@ -12,6 +12,7 @@ paddle2Height = 70;
 score1 = 0;
 score2 = 0;
 
+game_status = "";
 
 playerscore = 0;
 pcscore = 0;
@@ -55,6 +56,8 @@ function modelLoaded(){
 }
 
 function draw(){
+  if(game_status === "start")
+{
   background(0); 
   image(video,0,0,700,550)
   fill("black");
@@ -100,8 +103,14 @@ function draw(){
     stroke(117, 201, 139);
     circle(pulsoX, pulsoY, 20);
   }
+  }
 }
 
+function jogar()
+{
+  game_status = "start";
+  document.getElementById("status").innerHTML = "O jogo está carregando!";
+}
 
 
 //Função reset() para quando a bola não colidir com a raquete
